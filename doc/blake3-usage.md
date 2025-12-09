@@ -105,7 +105,7 @@ int main() {
     /* Create hasher with default configuration */
     hasher = fy_blake3_hasher_create(&cfg);
     if (!hasher) {
-        fprintf(stderr, "Failed to create hasher\\n");
+        fprintf(stderr, "Failed to create hasher\n");
         return 1;
     }
     
@@ -117,7 +117,7 @@ int main() {
     for (int i = 0; i < FY_BLAKE3_OUT_LEN; i++) {
         printf("%02x", hash[i]);
     }
-    printf("\\n");
+    printf("\n");
     
     fy_blake3_hasher_destroy(hasher);
     return 0;
@@ -150,7 +150,7 @@ struct fy_blake3_hasher *hasher = fy_blake3_hasher_create(&cfg);
 /* Hash entire file (may use mmap for efficiency) */
 const uint8_t *hash = fy_blake3_hash_file(hasher, "largefile.bin");
 if (!hash) {
-    fprintf(stderr, "Failed to hash file\\n");
+    fprintf(stderr, "Failed to hash file\n");
 }
 
 fy_blake3_hasher_destroy(hasher);
@@ -170,9 +170,9 @@ struct fy_blake3_hasher *hasher = fy_blake3_hasher_create(&cfg);
 
 ```c
 const char *backend = NULL;
-printf("Available BLAKE3 backends:\\n");
+printf("Available BLAKE3 backends:\n");
 while ((backend = fy_blake3_backend_iterate(&backend)) != NULL) {
-    printf("  - %s\\n", backend);
+    printf("  - %s\n", backend);
 }
 /* The last backend in the iteration is the default */
 ```
