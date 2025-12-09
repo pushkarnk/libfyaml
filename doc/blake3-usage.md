@@ -4,6 +4,8 @@
 
 libfyaml includes a **BLAKE3** cryptographic hash function implementation as part of its library. BLAKE3 is a fast, secure cryptographic hash function that is significantly faster than MD5, SHA-1, SHA-2, SHA-3, and BLAKE2.
 
+**Key Point**: BLAKE3 is **not used for YAML parsing** itself. It is provided as a utility feature and public API for applications that need fast cryptographic hashing alongside YAML processing. The library uses XXHash for internal operations like memory deduplication.
+
 ## What is BLAKE3?
 
 BLAKE3 is:
@@ -270,12 +272,31 @@ The BLAKE3 implementation consists of:
 
 ## Why BLAKE3 in libfyaml?
 
-While not immediately obvious, BLAKE3 can be useful for:
+**Important Note**: BLAKE3 is **NOT currently used** in the actual YAML parsing, serialization, or document manipulation code. The deduplication allocator uses XXHash (XXH64), not BLAKE3.
 
-1. **Content Addressing**: Hash YAML content for deduplication or caching
-2. **Checksumming**: Verify integrity of YAML files
-3. **Utilities**: The `fy-tool b3sum` command provides a convenient hashing utility
-4. **Future Features**: May be used for internal optimizations (e.g., allocator deduplication, caching)
+BLAKE3 is included in libfyaml primarily as:
+
+1. **A Utility Feature**: Provides a fast, high-quality hashing tool via the `fy-tool b3sum` command
+2. **A Public API**: Exposed through `libfyaml.h` for users who need fast cryptographic hashing alongside YAML processing
+3. **Future-Proofing**: Available for potential future internal optimizations if needed
+
+### Potential Use Cases
+
+While BLAKE3 doesn't participate in YAML parsing directly, users of libfyaml can leverage it for:
+
+1. **Content Addressing**: Hash YAML document content for deduplication or caching systems
+2. **File Integrity**: Verify integrity of YAML configuration files
+3. **Checksumming**: Generate checksums for YAML files in build systems or deployment pipelines
+4. **Key Derivation**: Derive keys from YAML configuration data
+5. **Fast Hashing**: General-purpose cryptographic hashing in applications that also use libfyaml
+
+### Why Not Use BLAKE3 for Internal Operations?
+
+The library uses **XXHash (XXH64)** for internal deduplication in the allocator because:
+- XXHash is extremely fast for non-cryptographic hashing
+- The deduplication allocator doesn't need cryptographic security
+- XXHash has lower overhead for small data chunks
+- BLAKE3's cryptographic guarantees would be overkill for memory deduplication
 
 ## Version
 
