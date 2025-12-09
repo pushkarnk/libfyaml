@@ -58,7 +58,7 @@ struct fy_blake3_hasher_cfg {
     const void *context;           /* Context for key derivation mode */
     size_t context_len;            /* Context length */
     struct fy_thread_pool *tp;    /* Thread pool (NULL to create private) */
-    int num_threads;               /* Thread count: 0=default, >0=specific, -1=disabled */
+    int num_threads;               /* Thread count: 0=default (CPUs×3/2), >0=specific, -1=disabled */
 };
 
 /* API functions */
@@ -217,7 +217,7 @@ struct fy_blake3_hasher_cfg cfg = {
 ```
 
 Thread count options:
-- **0**: Default (NUM_CPUS * 3 / 2)
+- **0**: Default (number of CPUs × 3 / 2)
 - **> 0**: Specific number of threads
 - **-1**: Disable threading entirely
 
